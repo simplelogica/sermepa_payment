@@ -1,0 +1,15 @@
+name = Sermepa Payment
+description = Provides Sermepa integration to Payment.
+package = Payment
+dependencies[] = payment
+core = 7.x
+
+files[] = inc/SermepaPaymentMethodController.inc
+files[] = inc/SermepaPaymentForm.inc
+files[] = inc/SermepaSettingsForm.inc
+files[] = inc/SermepaEntityCRUD.inc
+
+# facine/Sermepa classes
+files[] = Sermepa/src/Sermepa.php
+files[] = Sermepa/src/SermepaException.php
+files[] = Sermepa/src/includes/sha1.php
