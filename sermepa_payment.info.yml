@@ -1,0 +1,9 @@
+name: Sermepa Payment
+type: module
+description: 'Provides Sermepa compatibility in Payment module.'
+package: Development
+project: sermepa_payment
+version: 8.0-dev
+core: 8.x
+dependencies:
+  - payment

@@ -1,0 +1,9 @@
+{
+  "name": "drupal/sermepa_payment",
+  "description": "Provides Sermepa compatibility for Payment module.",
+  "type": "drupal-module",
+  "require": {
+    "drupal/payment": "8.2.0-rc3"
+  },
+  "minimum-stability": "dev"
+}
