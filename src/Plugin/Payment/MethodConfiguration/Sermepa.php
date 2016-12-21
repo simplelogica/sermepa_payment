@@ -31,6 +31,42 @@ class Sermepa extends Basic {
   }
 
   /**
+   * Gets the setting for the merchant code.
+   *
+   * @return string
+   */
+  public function getMerchantCode() {
+    return !empty($this->configuration['merchant_code']) ? $this->configuration['merchant_code'] : '';
+  }
+
+  /**
+   * Gets the setting for the merchant terminal.
+   *
+   * @return string
+   */
+  public function getMerchantTerminal() {
+    return !empty($this->configuration['merchant_terminal']) ? $this->configuration['merchant_terminal'] : '';
+  }
+
+  /**
+   * Gets the setting for the merchant currency.
+   *
+   * @return string
+   */
+  public function getMerchantCurrency() {
+    return !empty($this->configuration['merchant_currency']) ? $this->configuration['merchant_currency'] : '';
+  }
+
+  /**
+   * Gets the setting for the encryption key.
+   *
+   * @return string
+   */
+  public function getEncryptionKey() {
+    return !empty($this->configuration['encryption_key']) ? $this->configuration['encryption_key'] : '';
+  }
+
+  /**
    * Implements a form API #process callback.
    */
   public function processBuildConfigurationForm(array &$element, FormStateInterface $form_state, array &$form) {
@@ -49,6 +85,26 @@ class Sermepa extends Basic {
       ),
       '#default_value' => $this->isProduction() ? "production" : "test",
     ];
+    $element['sermepa']['merchant_code'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Merchant Code'),
+      '#default_value' => $this->getMerchantCode()
+    ];
+    $element['sermepa']['merchant_terminal'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Merchant Terminal'),
+      '#default_value' => $this->getMerchantTerminal()
+    ];
+    $element['sermepa']['merchant_currency'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Merchant Currency'),
+      '#default_value' => $this->getMerchantCurrency()
+    ];
+    $element['sermepa']['encryption_key'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Encryption Key'),
+      '#default_value' => $this->getEncryptionKey()
+    ];
 
     return $element;
   }
@@ -64,6 +120,10 @@ class Sermepa extends Basic {
     $values = $form_state->getValues();
     $values = NestedArray::getValue($values, $parents);
     $this->configuration['production'] = $values['sermepa']['production'] === "production" ? true: false;
+    $this->configuration['merchant_code'] = $values['sermepa']['merchant_code'];
+    $this->configuration['merchant_terminal'] = $values['sermepa']['merchant_terminal'];
+    $this->configuration['merchant_currency'] = $values['sermepa']['merchant_currency'];
+    $this->configuration['encryption_key'] = $values['sermepa']['encryption_key'];
   }
 
   /**
@@ -71,7 +131,11 @@ class Sermepa extends Basic {
    */
   public function getDerivativeConfiguration() {
     return [
-      'production' => $this->isProduction()
+      'production' => $this->isProduction(),
+      'merchant_code' => $this->getMerchantCode(),
+      'merchant_terminal' => $this->getMerchantTerminal(),
+      'merchant_currency' => $this->getMerchantCurrency(),
+      'encryption_key' => $this->getEncryptionKey()
     ];
   }
 
