@@ -1,0 +1,2 @@
+plugin.plugin_configuration.payment_method_configuration.sermepa_payment:
+  type: plugin.plugin_configuration.payment_method_configuration.payment_basic
