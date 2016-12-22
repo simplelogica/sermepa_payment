@@ -3,7 +3,8 @@
   "description": "Provides Sermepa compatibility for Payment module.",
   "type": "drupal-module",
   "require": {
-    "drupal/payment": "8.2.0-rc3"
+    "drupal/payment": "8.2.0-rc3",
+    "drupal/payment_offsite_api": "8.2.0-rc1"
   },
   "autoload": {
     "psr-4": {
