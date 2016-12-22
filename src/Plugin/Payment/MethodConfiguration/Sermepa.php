@@ -26,8 +26,17 @@ class Sermepa extends Basic {
    *
    * @return bool
    */
-  public function isProduction() {
-    return !empty($this->configuration['production']);
+  public function getEnvironment() {
+    return !empty($this->configuration['environment']) ? $this->configuration['environment'] : '';
+  }
+
+  /**
+   * Gets the setting for the merchant name.
+   *
+   * @return string
+   */
+  public function getMerchantName() {
+    return !empty($this->configuration['merchant_name']) ? $this->configuration['merchant_name'] : '';
   }
 
   /**
@@ -76,14 +85,19 @@ class Sermepa extends Basic {
       '#type' => 'fieldset',
       '#title' => $this->t("SERMEPA configuration")
     ];
-    $element['sermepa']['production'] = [
+    $element['sermepa']['environment'] = [
       '#type' => 'select',
       '#title' => $this->t('Environment'),
       '#options' => array(
-        "production" => $this->t("Production"),
+        "live" => $this->t("Live"),
         "test" => $this->t("Test")
       ),
-      '#default_value' => $this->isProduction() ? "production" : "test",
+      '#default_value' => $this->getEnvironment(),
+    ];
+    $element['sermepa']['merchant_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Merchant Name'),
+      '#default_value' => $this->getMerchantName()
     ];
     $element['sermepa']['merchant_code'] = [
       '#type' => 'textfield',
@@ -119,7 +133,8 @@ class Sermepa extends Basic {
     array_pop($parents);
     $values = $form_state->getValues();
     $values = NestedArray::getValue($values, $parents);
-    $this->configuration['production'] = $values['sermepa']['production'] === "production" ? true: false;
+    $this->configuration['environment'] = $values['sermepa']['environment'];
+    $this->configuration['merchant_name'] = $values['sermepa']['merchant_name'];
     $this->configuration['merchant_code'] = $values['sermepa']['merchant_code'];
     $this->configuration['merchant_terminal'] = $values['sermepa']['merchant_terminal'];
     $this->configuration['merchant_currency'] = $values['sermepa']['merchant_currency'];
@@ -131,7 +146,8 @@ class Sermepa extends Basic {
    */
   public function getDerivativeConfiguration() {
     return [
-      'production' => $this->isProduction(),
+      'environment' => $this->getEnvironment(),
+      'merchant_name' => $this->getMerchantName(),
       'merchant_code' => $this->getMerchantCode(),
       'merchant_terminal' => $this->getMerchantTerminal(),
       'merchant_currency' => $this->getMerchantCurrency(),
