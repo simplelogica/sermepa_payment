@@ -45,6 +45,8 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     // Configure gateway
     $gateway->setOrder($payment->id());
     $gateway->setAmount($payment->getAmount());
+    $gateway->setCurrency($this->configuration['merchant_currency']);
+    $gateway->setMerchantPaymentMethod($this->configuration['merchant_payment_method']);
     $gateway->setUrlKO(); // TODO: Add KO URL
     $gateway->setUrlOK(); // TODO: Add OK URL
 
