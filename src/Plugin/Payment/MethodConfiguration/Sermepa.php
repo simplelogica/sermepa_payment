@@ -9,7 +9,7 @@ namespace Drupal\sermepa_payment\Plugin\Payment\MethodConfiguration;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\payment\Plugin\Payment\MethodConfiguration\Basic;
-use CommerceRedsys\Payment\Sermepa as SermepaApi:
+use CommerceRedsys\Payment\Sermepa as SermepaApi;
 
 /**
  * Provides the configuration for the Sermepa payment method plugin.
