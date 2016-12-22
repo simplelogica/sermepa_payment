@@ -9,6 +9,7 @@ namespace Drupal\sermepa_payment\Plugin\Payment\MethodConfiguration;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\payment\Plugin\Payment\MethodConfiguration\Basic;
+use CommerceRedsys\Payment\Sermepa as SermepaApi:
 
 /**
  * Provides the configuration for the Sermepa payment method plugin.
@@ -24,7 +25,7 @@ class Sermepa extends Basic {
   /**
    * Gets the setting for the production server.
    *
-   * @return bool
+   * @return string
    */
   public function getEnvironment() {
     return !empty($this->configuration['environment']) ? $this->configuration['environment'] : '';
@@ -67,6 +68,15 @@ class Sermepa extends Basic {
   }
 
   /**
+   * Gets the setting for the merchant payment method.
+   *
+   * @return string
+   */
+  public function getMerchantPaymentMethod() {
+    return !empty($this->configuration['merchant_payment_method']) ? $this->configuration['merchant_payment_method'] : '';
+  }
+
+  /**
    * Gets the setting for the encryption key.
    *
    * @return string
@@ -92,31 +102,49 @@ class Sermepa extends Basic {
         "live" => $this->t("Live"),
         "test" => $this->t("Test")
       ),
+      '#required' => TRUE,
       '#default_value' => $this->getEnvironment(),
     ];
     $element['sermepa']['merchant_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Merchant Name'),
+      '#maxlength' => SermepaApi::getMerchantNameMaxLength(),
+      '#required' => TRUE,
       '#default_value' => $this->getMerchantName()
     ];
     $element['sermepa']['merchant_code'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Merchant Code'),
+      '#maxlength' => SermepaApi::getMerchantCodeMaxLength(),
+      '#required' => TRUE,
       '#default_value' => $this->getMerchantCode()
     ];
     $element['sermepa']['merchant_terminal'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Merchant Terminal'),
+      '#maxlength' => SermepaApi::getMerchantTerminalMaxLength(),
+      '#required' => TRUE,
       '#default_value' => $this->getMerchantTerminal()
     ];
     $element['sermepa']['merchant_currency'] = [
-      '#type' => 'textfield',
+      '#type' => 'select',
       '#title' => $this->t('Merchant Currency'),
+      '#options' => SermepaApi::getAvailableCurrencies(),
+      '#required' => TRUE,
       '#default_value' => $this->getMerchantCurrency()
+    ];
+    $element['sermepa']['merchant_payment_method'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Merchant Payment Method'),
+      '#options' => SermepaApi::getAvailablePaymentMethods(),
+      '#required' => TRUE,
+      '#default_value' => $this->getMerchantPaymentMethod()
     ];
     $element['sermepa']['encryption_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Encryption Key'),
+      '#maxlength' => SermepaApi::getMerchantPasswordMaxLength(),
+      '#required' => TRUE,
       '#default_value' => $this->getEncryptionKey()
     ];
 
@@ -138,6 +166,7 @@ class Sermepa extends Basic {
     $this->configuration['merchant_code'] = $values['sermepa']['merchant_code'];
     $this->configuration['merchant_terminal'] = $values['sermepa']['merchant_terminal'];
     $this->configuration['merchant_currency'] = $values['sermepa']['merchant_currency'];
+    $this->configuration['merchant_payment_method'] = $values['sermepa']['merchant_payment_method'];
     $this->configuration['encryption_key'] = $values['sermepa']['encryption_key'];
   }
 
@@ -151,6 +180,7 @@ class Sermepa extends Basic {
       'merchant_code' => $this->getMerchantCode(),
       'merchant_terminal' => $this->getMerchantTerminal(),
       'merchant_currency' => $this->getMerchantCurrency(),
+      'merchant_payment_method' => $this->getMerchantPaymentMethod(),
       'encryption_key' => $this->getEncryptionKey()
     ];
   }
