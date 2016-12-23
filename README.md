@@ -7,7 +7,6 @@ To use this library in a Drupal 8 library, some repositories should be added in 
 
 ```json
 "repositories": [
-  [...]
   {
     "type":"vcs",
     "url":"/code/libraries/sermepa_payment"
@@ -18,7 +17,6 @@ To use this library in a Drupal 8 library, some repositories should be added in 
   }
 ],
 "require": {
-  [...]
   "drupal/sermepa_payment": "dev-master"
 },
 ```
