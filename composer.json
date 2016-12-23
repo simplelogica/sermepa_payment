@@ -4,8 +4,15 @@
   "type": "drupal-module",
   "require": {
     "drupal/payment": "8.2.0-rc3",
-    "drupal/payment_offsite_api": "8.2.0-rc1"
+    "drupal/payment_offsite_api": "8.2.0-rc1",
+    "commerce_redsys/sermepa": "*"
   },
+  "repositories": [
+      {
+          "type": "git",
+          "url": "https://github.com/simplelogica/sermepa_php"
+      }
+  ],
   "autoload": {
     "psr-4": {
         "CommerceRedsys\\Payment\\": "Sermepa/src/"
