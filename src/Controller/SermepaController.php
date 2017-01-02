@@ -5,6 +5,8 @@ namespace Drupal\sermepa_payment\Controller;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\payment\Entity\Payment;
+use Drupal\sermepa_payment\Plugin\Payment\Method\Sermepa as SermepaMethod;
 
 class SermepaController extends ControllerBase {
 
@@ -15,7 +17,23 @@ class SermepaController extends ControllerBase {
    *   Run access checks for this account.
    */
   public function access(AccountInterface $account) {
-    return AccessResult::allowedIf(true);
+    $tempstore = \Drupal::service('user.private_tempstore')->get('sermepa_payment');
+
+    $storedPaymentId = $tempstore->get("payment_id");
+    $receivedPaymentId = \Drupal::request()->get('payment_id');
+
+    // Try to load payment and the payment_method from database
+    $payment = Payment::load($receivedPaymentId);
+    $payment_method = is_null($payment) ? null : $payment->getPaymentMethod();
+
+    // Allow access of payment IDs match, the paymet can be loaded and the
+    // method used is Sermepa
+    return AccessResult::allowedIf(
+      ($storedPaymentId == $receivedPaymentId) &&
+      !is_null($payment) &&
+      !is_null($payment_method) &&
+      ($payment_method instanceof SermepaMethod)
+    );
   }
 
   /**
