@@ -1,5 +1,5 @@
 sermepa_payment.callback:
-  path: '/payment/sermepa'
+  path: '/payment/sermepa/{payment_id}'
   defaults:
     _controller: '\Drupal\sermepa_payment\Controller\SermepaController::callback'
   requirements:
