@@ -8,12 +8,12 @@ To use this library in a Drupal 8 library, some repositories should be added in 
 ```json
 "repositories": [
   {
-    "type":"vcs",
-    "url":"/code/libraries/sermepa_payment"
+    "type":"git",
+    "url":"https://github.com/simplelogica/sermepa_payment"
   },
   {
     "type": "git",
-    "url": "https://github.com/simplelogica/sermepa_php"
+    "url": "https://github.com/CommerceRedsys/sermepa"
   }
 ],
 "require": {
