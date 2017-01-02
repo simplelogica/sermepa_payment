@@ -34,13 +34,7 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     $payment = $this->getPayment();
 
     // Create Sermepa object
-    $gateway = new SermepaApi(
-      $this->configuration['merchant_name'],
-      $this->configuration['merchant_code'],
-      $this->configuration['merchant_terminal'],
-      $this->configuration['encryption_key'],
-      $this->configuration['environment']
-    );
+    $gateway = $this->getSermepaGateway();
 
     // Configure gateway
     $gateway->setOrder($payment->id());
@@ -66,4 +60,16 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     return $form;
   }
 
+  /**
+   * Function to get a fresh instance of Sermepa Library
+   */
+  public function getSermepaGateway() {
+    return new SermepaApi(
+      $this->configuration['merchant_name'],
+      $this->configuration['merchant_code'],
+      $this->configuration['merchant_terminal'],
+      $this->configuration['encryption_key'],
+      $this->configuration['environment']
+    );
+  }
 }

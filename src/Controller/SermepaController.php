@@ -19,17 +19,15 @@ class SermepaController extends ControllerBase {
   public function access(AccountInterface $account) {
     $tempstore = \Drupal::service('user.private_tempstore')->get('sermepa_payment');
 
-    $storedPaymentId = $tempstore->get("payment_id");
-    $receivedPaymentId = \Drupal::request()->get('payment_id');
+    $received_payment_id = \Drupal::request()->get('payment_id');
 
     // Try to load payment and the payment_method from database
-    $payment = Payment::load($receivedPaymentId);
+    $payment = Payment::load($received_payment_id);
     $payment_method = is_null($payment) ? null : $payment->getPaymentMethod();
 
     // Allow access of payment IDs match, the paymet can be loaded and the
     // method used is Sermepa
     return AccessResult::allowedIf(
-      ($storedPaymentId == $receivedPaymentId) &&
       !is_null($payment) &&
       !is_null($payment_method) &&
       ($payment_method instanceof SermepaMethod)
@@ -43,7 +41,28 @@ class SermepaController extends ControllerBase {
     *   Request data, including the step variable tat indicates current step.
     */
   public function callback(Request $request) {
-    // Do something magic.
-    return [];
+    // Get payment object (which exists as checked on access policy).
+    $received_payment_id = \Drupal::request()->get('payment_id');
+    $payment = Payment::load($received_payment_id);
+
+    // Get payment method and instantiate a gateway.
+    $payment_method = $payment->getPaymentMethod();
+    $gateway = $payment_method->getSermepaGateway();
+
+    // Get and check feedback
+    $feedback = $gateway->getFeedback();
+
+    if ($gateway->validSignatures($feedback)) {
+      $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
+      $response_code = $response['Ds_Response'];
+
+      if ($response_code <= 99) {
+        // TODO: Set payment completed
+      } else {
+        // TODO: Set payment error.
+      }
+    }
+
+    return true;
   }
 }
