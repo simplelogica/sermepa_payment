@@ -5,7 +5,7 @@
   "require": {
     "drupal/payment": "8.2.0-rc3",
     "drupal/payment_offsite_api": "8.2.0-rc1",
-    "commerce_redsys/sermepa": "dev-master"
+    "commerceredsys/sermepa": "dev-master"
   },
   "minimum-stability": "dev"
 }
