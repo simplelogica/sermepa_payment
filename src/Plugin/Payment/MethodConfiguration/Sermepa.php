@@ -86,6 +86,24 @@ class Sermepa extends Basic {
   }
 
   /**
+   * Gets the setting for the URL OK.
+   *
+   * @return string
+   */
+  public function getUrlOk() {
+    return !empty($this->configuration['url_ok']) ? $this->configuration['url_ok'] : '';
+  }
+
+  /**
+   * Gets the setting for the URL KO.
+   *
+   * @return string
+   */
+  public function getUrlKo() {
+    return !empty($this->configuration['url_ko']) ? $this->configuration['url_ko'] : '';
+  }
+
+  /**
    * Implements a form API #process callback.
    */
   public function processBuildConfigurationForm(array &$element, FormStateInterface $form_state, array &$form) {
@@ -148,6 +166,23 @@ class Sermepa extends Basic {
       '#default_value' => $this->getEncryptionKey()
     ];
 
+    $element['site_config'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t("Site configuration")
+    ];
+    $element['site_config']['url_ok'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('URL to redirect when OK'),
+      '#required' => TRUE,
+      '#default_value' => $this->getUrlOk()
+    ];
+    $element['site_config']['url_ko'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('URL to redirect when KO'),
+      '#required' => TRUE,
+      '#default_value' => $this->getUrlKo()
+    ];
+
     return $element;
   }
 
@@ -161,6 +196,7 @@ class Sermepa extends Basic {
     array_pop($parents);
     $values = $form_state->getValues();
     $values = NestedArray::getValue($values, $parents);
+
     $this->configuration['environment'] = $values['sermepa']['environment'];
     $this->configuration['merchant_name'] = $values['sermepa']['merchant_name'];
     $this->configuration['merchant_code'] = $values['sermepa']['merchant_code'];
@@ -168,6 +204,9 @@ class Sermepa extends Basic {
     $this->configuration['merchant_currency'] = $values['sermepa']['merchant_currency'];
     $this->configuration['merchant_payment_method'] = $values['sermepa']['merchant_payment_method'];
     $this->configuration['encryption_key'] = $values['sermepa']['encryption_key'];
+
+    $this->configuration['url_ok'] = $values['site_config']['url_ok'];
+    $this->configuration['url_ko'] = $values['site_config']['url_ko'];
   }
 
   /**
@@ -181,7 +220,10 @@ class Sermepa extends Basic {
       'merchant_terminal' => $this->getMerchantTerminal(),
       'merchant_currency' => $this->getMerchantCurrency(),
       'merchant_payment_method' => $this->getMerchantPaymentMethod(),
-      'encryption_key' => $this->getEncryptionKey()
+      'encryption_key' => $this->getEncryptionKey(),
+
+      'url_ok' => $this->getUrlOk(),
+      'url_ko' => $this->getUrlKo()
     ];
   }
 
