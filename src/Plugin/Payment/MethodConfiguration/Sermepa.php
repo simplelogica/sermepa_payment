@@ -90,7 +90,7 @@ class Sermepa extends Basic {
    *
    * @return string
    */
-  public function getUrlOk() {
+  public function getUrlOK() {
     return !empty($this->configuration['url_ok']) ? $this->configuration['url_ok'] : '';
   }
 
@@ -99,7 +99,7 @@ class Sermepa extends Basic {
    *
    * @return string
    */
-  public function getUrlKo() {
+  public function getUrlKO() {
     return !empty($this->configuration['url_ko']) ? $this->configuration['url_ko'] : '';
   }
 
@@ -174,13 +174,13 @@ class Sermepa extends Basic {
       '#type' => 'textfield',
       '#title' => $this->t('URL to redirect when OK'),
       '#required' => TRUE,
-      '#default_value' => $this->getUrlOk()
+      '#default_value' => $this->getUrlOK()
     ];
     $element['site_config']['url_ko'] = [
       '#type' => 'textfield',
       '#title' => $this->t('URL to redirect when KO'),
       '#required' => TRUE,
-      '#default_value' => $this->getUrlKo()
+      '#default_value' => $this->getUrlKO()
     ];
 
     return $element;
@@ -222,8 +222,8 @@ class Sermepa extends Basic {
       'merchant_payment_method' => $this->getMerchantPaymentMethod(),
       'encryption_key' => $this->getEncryptionKey(),
 
-      'url_ok' => $this->getUrlOk(),
-      'url_ko' => $this->getUrlKo()
+      'url_ok' => $this->getUrlOK(),
+      'url_ko' => $this->getUrlKO()
     ];
   }
 
