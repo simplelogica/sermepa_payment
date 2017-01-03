@@ -10,7 +10,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\payment\Entity\Payment;
 use Drupal\payment\Entity\PaymentInterface;
-use Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodOffsite;
+use Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodBaseOffsite;
 use Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodOffsiteInterface;
 use CommerceRedsys\Payment\Sermepa as SermepaApi;
 
