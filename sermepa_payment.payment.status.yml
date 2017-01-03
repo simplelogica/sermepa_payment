@@ -1,5 +1,6 @@
 payment_sermepa_error:
   label: Sermepa Error
+  description: 'Sermepa specific error codes'
   parent_id: payment_failed
 
 payment_sermepa_error_900:
