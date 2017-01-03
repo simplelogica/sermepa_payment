@@ -18,7 +18,7 @@ use CommerceRedsys\Payment\Sermepa as SermepaApi;
  * Sermepa payment method.
  *
  * @PaymentMethod(
- *   id = "sermepa_payment",
+ *   id = "payment_sermepa",
  *   label = @Translation("Sermepa"),
  *   deriver = "\Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodBaseOffsiteDeriver",
  *   operations_provider = "\Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodBaseOffsiteOperationsProvider"
