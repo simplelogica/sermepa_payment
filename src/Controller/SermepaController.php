@@ -52,17 +52,26 @@ class SermepaController extends ControllerBase {
     // Get and check feedback
     $feedback = $gateway->getFeedback();
 
+    \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: Got feedback: #{var_dump($feedback)}");
+
     if ($gateway->validSignatures($feedback)) {
       $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
       $response_code = $response['Ds_Response'];
 
+      \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: Descoded response: #{var_dump($response)}");
+
       if ($response_code <= 99) {
+        \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: SUCCESSFUL response code: #{$response_code}");
         $payment->setPaymentStatus(PaymentStatus::load('payment_success'));
       } else {
         // Assign error status or a common one if not found
+        \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: ERROR response code: #{$response_code}");
         $payment_status = PaymentStatus::load('payment_sermepa_error_'.$response_code);
         $payment->setPaymentStatus($payment_status ?: PaymentStatus::load('payment_sermepa_error_common'));
       }
+    }
+    else {
+      \Drupal::logger()->error("[SERMEPA][Payment##{$received_payment_id}]: SIGNATURE ERROR on received feedback: #{var_dump($feedback)}");
     }
 
     return true;
