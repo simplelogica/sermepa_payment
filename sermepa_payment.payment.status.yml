@@ -181,3 +181,8 @@ sermepa_error_9999:
   label: Sermepa Error 9999
   description: 'Operation has been redirected issuer to authenticate'
   parent_id: sermepa_error
+
+sermepa_error_common:
+  label: Sermepa Error Common
+  description: 'Transaction refused'
+  parent_id: sermepa_error
