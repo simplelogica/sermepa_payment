@@ -1,0 +1,183 @@
+sermepa_error:
+  label: Sermepa Error
+  parent_id: payment_failed
+
+sermepa_error_900:
+  label: Sermepa Error 900
+  description: 'Transaction authorized for returns and confirmations'
+  parent_id: sermepa_error
+
+sermepa_error_101:
+  label: Sermepa Error 101
+  description: 'Expired card'
+  parent_id: sermepa_error
+
+sermepa_error_102:
+  label: Sermepa Error 102
+  description: 'Temporary exception card or on suspicion of fraud'
+  parent_id: sermepa_error
+
+sermepa_error_106:
+  label: Sermepa Error 106
+  description: 'PIN tries exceeded'
+  parent_id: sermepa_error
+
+sermepa_error_125:
+  label: Sermepa Error 125
+  description: 'Not effective card'
+  parent_id: sermepa_error
+
+sermepa_error_129:
+  label: Sermepa Error 129
+  description: 'Wrong security code (CVV2/CVC2)'
+  parent_id: sermepa_error
+
+sermepa_error_180:
+  label: Sermepa Error 180
+  description: 'Card out of the service'
+  parent_id: sermepa_error
+
+sermepa_error_184:
+  label: Sermepa Error 184
+  description: 'Error on owner authentication'
+  parent_id: sermepa_error
+
+sermepa_error_190:
+  label: Sermepa Error 190
+  description: 'Denied without specific reasons'
+  parent_id: sermepa_error
+
+sermepa_error_191:
+  label: Sermepa Error 191
+  description: 'Wrong expiration date'
+  parent_id: sermepa_error
+
+sermepa_error_202:
+  label: Sermepa Error 202
+  description: 'Temporary or emergency card on suspicion of withdrawal card fraud'
+  parent_id: sermepa_error
+
+sermepa_error_904:
+  label: Sermepa Error 904
+  description: 'Commerce not affiliated to FUC'
+  parent_id: sermepa_error
+
+sermepa_error_909:
+  label: Sermepa Error 909
+  description: 'System error'
+  parent_id: sermepa_error
+
+sermepa_error_913:
+  label: Sermepa Error 913
+  description: 'Order duplicated'
+  parent_id: sermepa_error
+
+sermepa_error_944:
+  label: Sermepa Error 944
+  description: 'Wrong session'
+  parent_id: sermepa_error
+
+sermepa_error_950:
+  label: Sermepa Error 950
+  description: 'Return operation not allowed'
+  parent_id: sermepa_error
+
+sermepa_error_9912:
+  label: Sermepa Error 9912
+  description: 'Issuer not available'
+  parent_id: sermepa_error
+
+sermepa_error_912:
+  label: Sermepa Error 912
+  description: 'Issuer not available'
+  parent_id: sermepa_error
+
+sermepa_error_9064:
+  label: Sermepa Error 9064
+  description: 'Wrong number of places in the card'
+  parent_id: sermepa_error
+
+sermepa_error_9078:
+  label: Sermepa Error 9078
+  description: 'Not allowed operation type for that card'
+  parent_id: sermepa_error
+
+sermepa_error_9093:
+  label: Sermepa Error 9093
+  description: 'Nonexistent card'
+  parent_id: sermepa_error
+
+sermepa_error_9094:
+  label: Sermepa Error 9094
+  description: 'International servers are rejected'
+  parent_id: sermepa_error
+
+sermepa_error_9104:
+  label: Sermepa Error 9104
+  description: 'Commerce with "owner safe" and the owner without secure shopping key'
+  parent_id: sermepa_error
+
+sermepa_error_9218:
+  label: Sermepa Error 9218
+  description: 'Commerce does not allow safe operations per input'
+  parent_id: sermepa_error
+
+sermepa_error_9253:
+  label: Sermepa Error 9253
+  description: 'Card does not do the check-digit'
+  parent_id: sermepa_error
+
+sermepa_error_9256:
+  label: Sermepa Error 9256
+  description: 'The commerce can not to make pre-authorization'
+  parent_id: sermepa_error
+
+sermepa_error_9257:
+  label: Sermepa Error 9257
+  description: 'This card does not allow preauthorization operations'
+  parent_id: sermepa_error
+
+sermepa_error_9261:
+  label: Sermepa Error 9261
+  description: 'Operation stopped for exceeding the control of restrictions on entry to the SIS'
+  parent_id: sermepa_error
+
+sermepa_error_9913:
+  label: Sermepa Error 9913
+  description: 'Error in commerce confirmation sent to the Virtual TPV'
+  parent_id: sermepa_error
+
+sermepa_error_9914:
+  label: Sermepa Error 9914
+  description: '"KO" commerce confirmation'
+  parent_id: sermepa_error
+
+sermepa_error_9915:
+  label: Sermepa Error 9915
+  description: 'Payment canceled by user'
+  parent_id: sermepa_error
+
+sermepa_error_9928:
+  label: Sermepa Error 9928
+  description: 'Cancellation of deferred authorization by SIS'
+  parent_id: sermepa_error
+
+sermepa_error_9929:
+  label: Sermepa Error 9929
+  description: 'Cancellation of deferred authorization by the commerce'
+  parent_id: sermepa_error
+
+sermepa_error_9997:
+  label: Sermepa Error 9997
+  description: 'Another transaction is being processed in SIS with the same card'
+  parent_id: sermepa_error
+
+sermepa_error_9998:
+  label: Sermepa Error 9998
+  description: 'Operation in card data request process'
+  parent_id: sermepa_error
+
+sermepa_error_9999:
+  label: Sermepa Error 9999
+  description: 'Operation has been redirected issuer to authenticate'
+  parent_id: sermepa_error
