@@ -73,4 +73,46 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
       $this->configuration['environment']
     );
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function ipnExecute() {
+    if (!$this->ipnValidate()) {
+      // @todo replace with throw exceptions.
+      return [
+        'status' => 'fail',
+        'message' => '',
+        'response_code' => 200,
+      ];
+    }
+
+    $this->getPayment()->setPaymentStatus($this->paymentStatusManager->createInstance('payment_pending'));
+    $this->getPayment()->save();
+
+    return [
+      'status' => 'success',
+      'message' => '',
+      'response_code' => 200,
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  function isConfigured() {
+    // It must be configured, as the required parameters are checked on the config form.
+    return true;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getResultPages() {
+    return [
+      'success' => FALSE,
+      'fail' => TRUE,
+      'pending' => FALSE,
+    ];
+  }
 }
