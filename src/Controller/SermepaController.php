@@ -58,7 +58,7 @@ class SermepaController extends ControllerBase {
       $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
       $response_code = $response['Ds_Response'];
 
-      \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: Descoded response: #{var_dump($response)}");
+      \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: Decoded response: #{var_dump($response)}");
 
       if ($response_code <= 99) {
         \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: SUCCESSFUL response code: #{$response_code}");
