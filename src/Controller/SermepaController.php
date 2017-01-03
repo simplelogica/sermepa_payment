@@ -6,6 +6,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\payment\Entity\Payment;
+use Drupal\payment\Entity\PaymentStatus;
 use Drupal\sermepa_payment\Plugin\Payment\Method\Sermepa as SermepaMethod;
 
 class SermepaController extends ControllerBase {
