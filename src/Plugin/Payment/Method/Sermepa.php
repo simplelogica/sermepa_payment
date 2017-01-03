@@ -100,6 +100,20 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
   /**
    * {@inheritdoc}
    */
+  function ipnValidate() {
+    return true;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  function getSupportedCurrencies() {
+    return true;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   function isConfigured() {
     // It must be configured, as the required parameters are checked on the config form.
     return true;
