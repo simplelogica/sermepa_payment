@@ -57,9 +57,11 @@ class SermepaController extends ControllerBase {
       $response_code = $response['Ds_Response'];
 
       if ($response_code <= 99) {
-        // TODO: Set payment completed
+        $payment->setPaymentStatus(PaymentStatus::load('payment_success'));
       } else {
-        // TODO: Set payment error.
+        // Assign error status or a common one if not found
+        $payment_status = PaymentStatus::load('payment_sermepa_error_'.$response_code);
+        $payment->setPaymentStatus($payment_status ?: PaymentStatus::load('payment_sermepa_error_common'));
       }
     }
 
