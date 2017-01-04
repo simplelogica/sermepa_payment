@@ -49,11 +49,11 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     $gateway->setOrder($payment->id());
     $gateway->setAmount($sermepa_price);
     $gateway->setMerchantUrl($callback_url);
-    $gateway->setCurrency($this->pluginDefinition['merchant_currency']);
-    $gateway->setPaymentMethod($this->pluginDefinition['payment_method']);
-    $gateway->setTransactionType($this->pluginDefinition['transaction_type']);
-    $gateway->setUrlKO($this->pluginDefinition['url_ko']);
-    $gateway->setUrlOK($this->pluginDefinition['url_ok']);
+    $gateway->setCurrency($this->pluginDefinition['config']['merchant_currency']);
+    $gateway->setPaymentMethod($this->pluginDefinition['config']['payment_method']);
+    $gateway->setTransactionType($this->pluginDefinition['config']['transaction_type']);
+    $gateway->setUrlKO($this->pluginDefinition['config']['url_ko']);
+    $gateway->setUrlOK($this->pluginDefinition['config']['url_ok']);
 
     // Set environment URL
     $form['#action'] = $gateway->getEnvironment();
@@ -64,7 +64,7 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     $this->addPaymentFormData('Ds_Signature', $gateway->composeMerchantSignature());
 
     // And auto submit the form
-    $this->setAutoSubmit(true);
+    $this->setAutoSubmit($this->pluginDefinition['auto_submit']);
 
     $form += $this->generateForm();
 
@@ -76,11 +76,11 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    */
   public function getSermepaGateway() {
     return new SermepaApi(
-      $this->pluginDefinition['merchant_name'],
-      $this->pluginDefinition['merchant_code'],
-      $this->pluginDefinition['merchant_terminal'],
-      $this->pluginDefinition['encryption_key'],
-      $this->pluginDefinition['environment']
+      $this->pluginDefinition['config']['merchant_name'],
+      $this->pluginDefinition['config']['merchant_code'],
+      $this->pluginDefinition['config']['merchant_terminal'],
+      $this->pluginDefinition['config']['encryption_key'],
+      $this->pluginDefinition['config']['environment']
     );
   }
 
