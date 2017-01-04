@@ -7,8 +7,7 @@
 namespace Drupal\sermepa_payment\Plugin\Payment\MethodConfiguration;
 
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\payment\Plugin\Payment\MethodConfiguration\Basic;
+use Drupal\Core\Form\FormStateInterface;use Drupal\payment_offsite_api\Plugin\Payment\MethodConfiguration\PaymentMethodConfigurationBaseOffsite;
 use CommerceRedsys\Payment\Sermepa as SermepaApi;
 
 /**
@@ -20,7 +19,7 @@ use CommerceRedsys\Payment\Sermepa as SermepaApi;
  *   label = @Translation("Sermepa")
  * )
  */
-class Sermepa extends Basic {
+class Sermepa extends PaymentMethodConfigurationBaseOffsite implements ContainerFactoryPluginInterface {
 
   /**
    * Gets the setting for the production server.

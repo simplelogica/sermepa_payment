@@ -107,7 +107,7 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    * {@inheritdoc}
    */
   function getSupportedCurrencies() {
-    return true;
+    return TRUE;
   }
 
   /**
@@ -115,7 +115,7 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    */
   function isConfigured() {
     // It must be configured, as the required parameters are checked on the config form.
-    return true;
+    return TRUE;
   }
 
   /**
@@ -123,8 +123,6 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    */
   public function getResultPages() {
     return [
-      'success' => FALSE,
-      'fail' => TRUE,
       'pending' => FALSE,
     ];
   }

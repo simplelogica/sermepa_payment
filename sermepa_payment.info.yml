@@ -6,4 +6,4 @@ project: sermepa_payment
 version: 8.0-dev
 core: 8.x
 dependencies:
-  - payment
+ - payment_offsite_api
