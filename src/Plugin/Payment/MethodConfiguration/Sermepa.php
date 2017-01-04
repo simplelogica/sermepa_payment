@@ -24,6 +24,35 @@ use CommerceRedsys\Payment\Sermepa as SermepaApi;
 class Sermepa extends PaymentMethodConfigurationBaseOffsite implements ContainerFactoryPluginInterface {
 
   /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return parent::defaultConfiguration() + [
+      'message_text' => '',
+      'message_text_format' => 'plain_text',
+      'auto_submit' => true,
+      'verbose' => false,
+      'ipn_statuses' => [
+        'success' => 'payment_success',
+        'failure' => 'payment_failed',
+        'pending' => 'payment_pending',
+      ],
+      'config' => [
+        'environment' => '',
+        'merchant_name' => '',
+        'merchant_code' => '',
+        'merchant_terminal' => '',
+        'merchant_currency' => '',
+        'payment_method' => 'C',
+        'transaction_type' => '0',
+        'encryption_key' => '',
+        'url_ok' => '',
+        'url_ko' => '',
+      ],
+    ];
+  }
+
+  /**
    * Gets the setting for the production server.
    *
    * @return string

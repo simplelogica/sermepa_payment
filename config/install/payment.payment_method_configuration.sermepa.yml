@@ -9,7 +9,6 @@ pluginConfiguration:
   ipn_statuses:
     success: payment_success
     failure: payment_failed
-    error: payment_failed
     pending: payment_pending
   config:
     environment: ''
