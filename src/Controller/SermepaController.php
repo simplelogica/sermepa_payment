@@ -3,9 +3,12 @@
 namespace Drupal\sermepa_payment\Controller;
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Drupal\payment\Entity\Payment;
+use Drupal\payment\Entity\Payment as PaymentEntity;
+use Drupal\payment\Payment;
 use Drupal\payment\Entity\PaymentStatus;
 use Drupal\sermepa_payment\Plugin\Payment\Method\Sermepa as SermepaMethod;
 
@@ -18,12 +21,10 @@ class SermepaController extends ControllerBase {
    *   Run access checks for this account.
    */
   public function access(AccountInterface $account) {
-    $tempstore = \Drupal::service('user.private_tempstore')->get('sermepa_payment');
-
     $received_payment_id = \Drupal::request()->get('payment_id');
 
     // Try to load payment and the payment_method from database
-    $payment = Payment::load($received_payment_id);
+    $payment = PaymentEntity::load($received_payment_id);
     $payment_method = is_null($payment) ? null : $payment->getPaymentMethod();
 
     // Allow access of payment IDs match, the paymet can be loaded and the
@@ -44,7 +45,7 @@ class SermepaController extends ControllerBase {
   public function callback(Request $request) {
     // Get payment object (which exists as checked on access policy).
     $received_payment_id = \Drupal::request()->get('payment_id');
-    $payment = Payment::load($received_payment_id);
+    $payment = PaymentEntity::load($received_payment_id);
 
     // Parse response (if any).
     return $this->parseResponse($payment);
@@ -59,7 +60,7 @@ class SermepaController extends ControllerBase {
   public function success(Request $request) {
     // Get payment object (which exists as checked on access policy).
     $received_payment_id = \Drupal::request()->get('payment_id');
-    $payment = Payment::load($received_payment_id);
+    $payment = PaymentEntity::load($received_payment_id);
 
     // Parse response (if any).
     $this->parseResponse($payment);
@@ -77,7 +78,7 @@ class SermepaController extends ControllerBase {
   public function failed(Request $request) {
     // Get payment object (which exists as checked on access policy).
     $received_payment_id = \Drupal::request()->get('payment_id');
-    $payment = Payment::load($received_payment_id);
+    $payment = PaymentEntity::load($received_payment_id);
 
     // Parse response (if any).
     $this->parseResponse($payment);
@@ -92,7 +93,7 @@ class SermepaController extends ControllerBase {
    * @param Payment $payment
    *   Payment object.
    */
-  private function parseResponse(Payment &$payment) {
+  private function parseResponse(PaymentEntity &$payment) {
     // Get payment method and instantiate a gateway.
     $payment_method = $payment->getPaymentMethod();
     $gateway = $payment_method->getSermepaGateway();
@@ -102,27 +103,29 @@ class SermepaController extends ControllerBase {
 
     // Only process feedback if there is any
     if ($feedback != FALSE) {
-      \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: Got feedback: #{var_dump($feedback)}");
+      \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: Got feedback: #{var_dump($feedback)}");
 
       if ($gateway->validSignatures($feedback)) {
         $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
         $response_code = $response['Ds_Response'];
 
-        \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: Decoded response: #{var_dump($response)}");
+        \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: Decoded response: #{var_dump($response)}");
 
         if ($response_code <= 99) {
-          \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: SUCCESSFUL response code: #{$response_code}");
-          $payment->setPaymentStatus(PaymentStatus::load('payment_success'));
+          \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: SUCCESSFUL response code: #{$response_code}");
+          $payment->setPaymentStatus(Payment::statusManager()->createInstance('payment_success'));
+          $payment->save();
           return TRUE;
         } else {
           // Assign error status or a common one if not found
-          \Drupal::logger()->info("[SERMEPA][Payment##{$received_payment_id}]: ERROR response code: #{$response_code}");
-          $payment_status = PaymentStatus::load('payment_sermepa_error_'.$response_code);
-          $payment->setPaymentStatus($payment_status ?: PaymentStatus::load('payment_sermepa_error_common'));
+          \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: ERROR response code: #{$response_code}");
+          $payment_status = Payment::statusManager()->createInstance('payment_sermepa_error_'.$response_code);
+          $payment->setPaymentStatus($payment_status ?: Payment::statusManager()->createInstance('payment_sermepa_error_common'));
+          $payment->save();
         }
       }
       else {
-        \Drupal::logger()->error("[SERMEPA][Payment##{$received_payment_id}]: SIGNATURE ERROR on received feedback: #{var_dump($feedback)}");
+        \Drupal::logger('default')->error("[SERMEPA][Payment##{$payment->id()}]: SIGNATURE ERROR on received feedback: #{var_dump($feedback)}");
       }
     }
 

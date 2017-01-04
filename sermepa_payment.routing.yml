@@ -4,7 +4,7 @@ sermepa_payment.callback:
     _controller: '\Drupal\sermepa_payment\Controller\SermepaController::callback'
   requirements:
     method: 'GET|POST'
-    _access: '\Drupal\sermepa_payment\Controller\SermepaController::access'
+    _custom_access: '\Drupal\sermepa_payment\Controller\SermepaController::access'
 
 sermepa_payment.success:
   path: '/payment/sermepa/{payment_id}/success'
@@ -12,7 +12,7 @@ sermepa_payment.success:
     _controller: '\Drupal\sermepa_payment\Controller\SermepaController::success'
   requirements:
     method: 'GET|POST'
-    _access: '\Drupal\sermepa_payment\Controller\SermepaController::access'
+    _custom_access: '\Drupal\sermepa_payment\Controller\SermepaController::access'
 
 sermepa_payment.failed:
   path: '/payment/sermepa/{payment_id}/failed'
@@ -20,4 +20,4 @@ sermepa_payment.failed:
     _controller: '\Drupal\sermepa_payment\Controller\SermepaController::failed'
   requirements:
     method: 'GET|POST'
-    _access: '\Drupal\sermepa_payment\Controller\SermepaController::access'
+    _custom_access: '\Drupal\sermepa_payment\Controller\SermepaController::access'
