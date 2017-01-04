@@ -101,7 +101,7 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     $this->getPayment()->save();
 
     return [
-      'status' => 'success',
+      'status' => 'pending',
       'message' => '',
       'response_code' => 200,
     ];
@@ -134,7 +134,7 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    */
   public function getResultPages() {
     return [
-      'pending' => FALSE,
+      'pending' => TRUE,
     ];
   }
 }

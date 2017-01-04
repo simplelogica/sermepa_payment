@@ -6,6 +6,11 @@ pluginConfiguration:
   message_text_format: plain_text
   auto_submit: true
   verbose: false
+  ipn_statuses:
+    success: payment_success
+    failure: payment_failed
+    error: payment_failed
+    pending: payment_pending
   config:
     environment: ''
     merchant_name: ''
