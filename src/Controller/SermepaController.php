@@ -120,7 +120,10 @@ class SermepaController extends ControllerBase {
           // Assign error status or a common one if not found
           \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: ERROR response code: #{$response_code}");
           $payment_status = Payment::statusManager()->createInstance('payment_sermepa_error_'.$response_code);
-          $payment->setPaymentStatus($payment_status ?: Payment::statusManager()->createInstance('payment_sermepa_error_common'));
+          $payment_status = ($payment_status->getPluginId() !== 'payment_unknown') ? $payment_status : Payment::statusManager()->createInstance('payment_sermepa_error_common');
+
+          // And apply it
+          $payment->setPaymentStatus($payment_status);
           $payment->save();
         }
       }
