@@ -107,7 +107,7 @@ class SermepaController extends ControllerBase {
 
       if ($gateway->validSignatures($feedback)) {
         $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
-        $response_code = $response['Ds_Response'];
+        $response_code = intval($response['Ds_Response']);
 
         \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: Decoded response: #{var_dump($response)}");
 
