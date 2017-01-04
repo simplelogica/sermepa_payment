@@ -65,11 +65,11 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    */
   public function getSermepaGateway() {
     return new SermepaApi(
-      $this->configuration['merchant_name'],
-      $this->configuration['merchant_code'],
-      $this->configuration['merchant_terminal'],
-      $this->configuration['encryption_key'],
-      $this->configuration['environment']
+      $this->pluginDefinition['config']['merchant_name'],
+      $this->pluginDefinition['config']['merchant_code'],
+      $this->pluginDefinition['config']['merchant_terminal'],
+      $this->pluginDefinition['config']['encryption_key'],
+      $this->pluginDefinition['config']['environment']
     );
   }
 
