@@ -10,6 +10,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\payment\Entity\Payment;
 use Drupal\payment\Entity\PaymentInterface;
+use Drupal\Core\Url;
 use Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodBaseOffsite;
 use Drupal\payment_offsite_api\Plugin\Payment\Method\PaymentMethodOffsiteInterface;
 use CommerceRedsys\Payment\Sermepa as SermepaApi;
@@ -35,22 +36,32 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     // Create Sermepa object
     $gateway = $this->getSermepaGateway();
 
+    // Original price * 100 and without decimals
+    $sermepa_price = number_format($payment->getAmount(), 2, '', '');
+
+    // Build callback URL
+    $callback_url = Url::fromRoute('sermepa_payment.callback')
+      ->setRouteParameters(['payment_id' => $payment->id()])
+      ->setAbsolute(TRUE)
+      ->toString();
+
     // Configure gateway
     $gateway->setOrder($payment->id());
-    $gateway->setAmount($payment->getAmount());
-    $gateway->setCurrency($this->configuration['merchant_currency']);
-    $gateway->setMerchantPaymentMethod($this->configuration['merchant_payment_method']);
-    $gateway->setMerchantUrl(\Drupal::url('sermepa_payment.callback', ['payment_id' => $payment->id()]));
-    $gateway->setUrlKO($this->configuration['url_ko']);
-    $gateway->setUrlOK($this->configuration['url_ok']);
+    $gateway->setAmount($sermepa_price);
+    $gateway->setMerchantUrl($callback_url);
+    $gateway->setCurrency($this->pluginDefinition['merchant_currency']);
+    $gateway->setPaymentMethod($this->pluginDefinition['payment_method']);
+    $gateway->setTransactionType($this->pluginDefinition['transaction_type']);
+    $gateway->setUrlKO($this->pluginDefinition['url_ko']);
+    $gateway->setUrlOK($this->pluginDefinition['url_ok']);
 
     // Set environment URL
     $form['#action'] = $gateway->getEnvironment();
 
     // Apply Sermepa parameters
-    foreach ($gateway->getParameters() as $name => $value) {
-      $this->addPaymentFormData($name, $value);
-    }
+    $this->addPaymentFormData('Ds_SignatureVersion', 'HMAC_SHA256_V1');
+    $this->addPaymentFormData('Ds_MerchantParameters', $gateway->composeMerchantParameters());
+    $this->addPaymentFormData('Ds_Signature', $gateway->composeMerchantSignature());
 
     // And auto submit the form
     $this->setAutoSubmit(true);
@@ -65,11 +76,11 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
    */
   public function getSermepaGateway() {
     return new SermepaApi(
-      $this->pluginDefinition['config']['merchant_name'],
-      $this->pluginDefinition['config']['merchant_code'],
-      $this->pluginDefinition['config']['merchant_terminal'],
-      $this->pluginDefinition['config']['encryption_key'],
-      $this->pluginDefinition['config']['environment']
+      $this->pluginDefinition['merchant_name'],
+      $this->pluginDefinition['merchant_code'],
+      $this->pluginDefinition['merchant_terminal'],
+      $this->pluginDefinition['encryption_key'],
+      $this->pluginDefinition['environment']
     );
   }
 

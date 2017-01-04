@@ -21,11 +21,14 @@ plugin.plugin_configuration.payment_method_configuration.payment_sermepa:
         merchant_currency:
           label: 'Merchant Currency'
           type: string
-        merchant_payment_method:
-          label: 'Merchant Payment Method'
-          type: string
         encryption_key:
           label: 'Encryption Key'
+          type: string
+        payment_method:
+          label: 'Payment Method'
+          type: string
+        transaction_type:
+          label: 'Transaction Type'
           type: string
         url_ok:
           label: 'URL OK'
