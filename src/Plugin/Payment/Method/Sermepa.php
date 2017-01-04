@@ -45,6 +45,16 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
       ->setAbsolute(TRUE)
       ->toString();
 
+    $success_url = Url::fromRoute('sermepa_payment.success')
+      ->setRouteParameters(['payment_id' => $payment->id()])
+      ->setAbsolute(TRUE)
+      ->toString();
+
+    $failed_url = Url::fromRoute('sermepa_payment.failed')
+      ->setRouteParameters(['payment_id' => $payment->id()])
+      ->setAbsolute(TRUE)
+      ->toString();
+
     // Configure gateway
     $gateway->setOrder($payment->id());
     $gateway->setAmount($sermepa_price);
@@ -52,8 +62,8 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
     $gateway->setCurrency($this->pluginDefinition['config']['merchant_currency']);
     $gateway->setPaymentMethod($this->pluginDefinition['config']['payment_method']);
     $gateway->setTransactionType($this->pluginDefinition['config']['transaction_type']);
-    $gateway->setUrlKO($this->pluginDefinition['config']['url_ko']);
-    $gateway->setUrlOK($this->pluginDefinition['config']['url_ok']);
+    $gateway->setUrlKO($success_url);
+    $gateway->setUrlOK($failed_url);
 
     // Set environment URL
     $form['#action'] = $gateway->getEnvironment();
