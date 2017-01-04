@@ -91,7 +91,7 @@ class Sermepa extends PaymentMethodConfigurationBaseOffsite implements Container
    *
    * @return string
    */
-  public function getTrasactionType() {
+  public function getTransactionType() {
     return !empty($this->configuration['transaction_type']) ? $this->configuration['transaction_type'] : '';
   }
 
