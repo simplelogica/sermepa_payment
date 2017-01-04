@@ -1,2 +1,35 @@
-plugin.plugin_configuration.payment_method_configuration.sermepa_payment:
-  type: plugin.plugin_configuration.payment_method_configuration.payment_basic
+plugin.plugin_configuration.payment_method_configuration.payment_sermepa:
+  type: plugin.plugin_configuration.payment_method_configuration.payment_offsite_api
+  label: 'Sermepa settings'
+  mapping:
+    config:
+      type: mapping
+      label: 'Sermepa configuration'
+      mapping:
+        environment:
+          label: 'Environment'
+          type: string
+        merchant_name:
+          label: 'Merchant Name'
+          type: string
+        merchant_code:
+          label: 'Merchant Code'
+          type: string
+        merchant_terminal:
+          label: 'Merchant Terminal'
+          type: string
+        merchant_currency:
+          label: 'Merchant Currency'
+          type: string
+        merchant_payment_method:
+          label: 'Merchant Payment Method'
+          type: string
+        encryption_key:
+          label: 'Encryption Key'
+          type: string
+        url_ok:
+          label: 'URL OK'
+          type: string
+        url_ko:
+          label: 'URL KO'
+          type: string

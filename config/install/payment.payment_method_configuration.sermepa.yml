@@ -1,0 +1,24 @@
+id: sermepa
+label: 'Sermepa'
+ownerId: 1
+pluginConfiguration:
+  message_text: ''
+  message_text_format: plain_text
+  auto_submit: true
+  verbose: false
+  config:
+    environment: ''
+    merchant_name: ''
+    merchant_code: ''
+    merchant_terminal: ''
+    merchant_currency: ''
+    merchant_payment_method: ''
+    encryption_key: ''
+    url_ok: ''
+    url_ko: ''
+pluginId: payment_sermepa
+status: false
+dependencies:
+  enforced:
+    module:
+      - sermepa_payment
