@@ -7,6 +7,10 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Url;
+
 use Drupal\payment\Entity\Payment as PaymentEntity;
 use Drupal\payment\Payment;
 use Drupal\payment\Entity\PaymentStatus;
@@ -65,8 +69,8 @@ class SermepaController extends ControllerBase {
     // Parse response (if any).
     $this->parseResponse($payment);
 
-    $url = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
-    return new TrustedRedirectResponse($url);
+    $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
+    return new TrustedRedirectResponse($this->buildUrl($url));
   }
 
   /**
@@ -83,8 +87,8 @@ class SermepaController extends ControllerBase {
     // Parse response (if any).
     $this->parseResponse($payment);
 
-    $url = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
-    return new TrustedRedirectResponse($url);
+    $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
+    return new TrustedRedirectResponse($this->buildUrl($url));
   }
 
   /**
@@ -133,5 +137,14 @@ class SermepaController extends ControllerBase {
     }
 
     return FALSE; // If no TRUE was returned before, then something bad happened or no data received.
+  }
+
+  private function buildUrl(string $url) {
+    if (UrlHelper::isExternal($url)) {
+      return $url;
+    } else {
+      $url_object = Url::fromUserInput($url);
+      return $url_object->setAbsolute(TRUE)->toString();
+    }
   }
 }
