@@ -144,7 +144,7 @@ class SermepaController extends ControllerBase {
       return $url;
     } else {
       $url_object = Url::fromUserInput($url);
-      return $url_object->setAbsolute(TRUE)->toString();
+      return $url_object->setAbsolute(TRUE)->toString(TRUE)->getGeneratedUrl();
     }
   }
 }
