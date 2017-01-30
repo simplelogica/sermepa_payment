@@ -21,5 +21,11 @@ To use this library in a Drupal 8 library, some repositories should be added in 
 },
 ```
 
+**IMPORTANT**: due to Drupal's new repository semantic versioning, this module is only compatible with projects using new repository.
+
+If you are using `https://packagist.drupal-composer.org` , you must use this project in commit `d564859e2776c635edb7d564a23d7db52b8988bc` or before.
+
+More information [here](https://www.drupal.org/node/2822344).
+
 ## Credits
 * This module uses the gateway classes implemented by [Facine](https://github.com/facine/Sermepa) to comunicate with Sermepa TPV.
