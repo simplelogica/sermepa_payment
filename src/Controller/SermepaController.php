@@ -107,22 +107,22 @@ class SermepaController extends ControllerBase {
 
     // Only process feedback if there is any
     if ($feedback != FALSE) {
-      \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: Got feedback: #{var_dump($feedback)}");
+      \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: Got feedback: " . var_dump($feedback));
 
       if ($gateway->validSignatures($feedback)) {
         $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
         $response_code = intval($response['Ds_Response']);
 
-        \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: Decoded response: #{var_dump($response)}");
+        \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: Decoded response: " . var_dump($response));
 
         if ($response_code <= 99) {
-          \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: SUCCESSFUL response code: #{$response_code}");
+          \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: SUCCESSFUL response code: " . $response_code);
           $payment->setPaymentStatus(Payment::statusManager()->createInstance('payment_success'));
           $payment->save();
           return TRUE;
         } else {
           // Assign error status or a common one if not found
-          \Drupal::logger('default')->info("[SERMEPA][Payment##{$payment->id()}]: ERROR response code: #{$response_code}");
+          \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: ERROR response code: " . $response_code);
           $payment_status = Payment::statusManager()->createInstance('payment_sermepa_error_'.$response_code);
           $payment_status = ($payment_status->getPluginId() !== 'payment_unknown') ? $payment_status : Payment::statusManager()->createInstance('payment_sermepa_error_common');
 
@@ -132,7 +132,7 @@ class SermepaController extends ControllerBase {
         }
       }
       else {
-        \Drupal::logger('default')->error("[SERMEPA][Payment##{$payment->id()}]: SIGNATURE ERROR on received feedback: #{var_dump($feedback)}");
+        \Drupal::logger('default')->error("[SERMEPA][Payment#" . $payment->id() . "]: SIGNATURE ERROR on received feedback: " . var_dump($feedback));
       }
     }
 
