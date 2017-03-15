@@ -107,13 +107,13 @@ class SermepaController extends ControllerBase {
 
     // Only process feedback if there is any
     if ($feedback != FALSE) {
-      \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: Got feedback: " . var_dump($feedback));
+      \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: Got feedback: " . print_r($feedback, true));
 
       if ($gateway->validSignatures($feedback)) {
         $response = $gateway->decodeMerchantParameters($feedback['Ds_MerchantParameters']);
         $response_code = intval($response['Ds_Response']);
 
-        \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: Decoded response: " . var_dump($response));
+        \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: Decoded response: " . print_r($response, true));
 
         if ($response_code <= 99) {
           \Drupal::logger('default')->info("[SERMEPA][Payment#" . $payment->id() . "]: SUCCESSFUL response code: " . $response_code);
