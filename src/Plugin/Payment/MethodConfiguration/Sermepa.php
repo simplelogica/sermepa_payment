@@ -17,7 +17,7 @@ use CommerceRedsys\Payment\Sermepa as SermepaApi;
  *
  * @PaymentMethodConfiguration(
  *   description = @Translation("Sermepa payment method type."),
- *   id = "payment_sermepa",
+ *   id = "sermepa_payment",
  *   label = @Translation("Sermepa")
  * )
  */

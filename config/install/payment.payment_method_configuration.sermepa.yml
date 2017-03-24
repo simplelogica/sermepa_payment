@@ -21,7 +21,7 @@ pluginConfiguration:
     encryption_key: ''
     url_ok: ''
     url_ko: ''
-pluginId: payment_sermepa
+pluginId: sermepa_payment
 status: false
 dependencies:
   enforced:
