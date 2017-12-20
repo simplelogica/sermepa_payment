@@ -6,6 +6,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\sermepa_payment\Event\SermepaEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 use Drupal\Component\Utility\UrlHelper;
@@ -52,7 +53,12 @@ class SermepaController extends ControllerBase {
     $payment = PaymentEntity::load($received_payment_id);
 
     // Parse response (if any).
-    return $this->parseResponse($payment);
+    $result = self::parseResponse($payment);
+
+    \Drupal::service('event_dispatcher')
+      ->dispatch(SermepaEvent::AFTER_CALLBACK, new SermepaEvent($payment));
+
+    return $result;
   }
 
   /**
@@ -66,11 +72,8 @@ class SermepaController extends ControllerBase {
     $received_payment_id = \Drupal::request()->get('payment_id');
     $payment = PaymentEntity::load($received_payment_id);
 
-    // Parse response (if any).
-    $this->parseResponse($payment);
-
     $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
-    return new TrustedRedirectResponse($this->buildUrl($uri));
+    return new TrustedRedirectResponse(self::buildUrl($uri));
   }
 
   /**
@@ -84,11 +87,8 @@ class SermepaController extends ControllerBase {
     $received_payment_id = \Drupal::request()->get('payment_id');
     $payment = PaymentEntity::load($received_payment_id);
 
-    // Parse response (if any).
-    $this->parseResponse($payment);
-
-    $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
-    return new TrustedRedirectResponse($this->buildUrl($uri));
+    $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ko'];
+    return new TrustedRedirectResponse(self::buildUrl($uri));
   }
 
   /**
@@ -97,7 +97,7 @@ class SermepaController extends ControllerBase {
    * @param Payment $payment
    *   Payment object.
    */
-  private function parseResponse(PaymentEntity &$payment) {
+  private static function parseResponse(PaymentEntity &$payment) {
     // Get payment method and instantiate a gateway.
     $payment_method = $payment->getPaymentMethod();
     $gateway = $payment_method->getSermepaGateway();
@@ -139,7 +139,7 @@ class SermepaController extends ControllerBase {
     return FALSE; // If no TRUE was returned before, then something bad happened or no data received.
   }
 
-  private function buildUrl(string $url) {
+  private static function buildUrl(string $url) {
     if (UrlHelper::isExternal($url)) {
       return $url;
     } else {
