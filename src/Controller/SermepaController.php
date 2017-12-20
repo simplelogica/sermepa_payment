@@ -66,9 +66,6 @@ class SermepaController extends ControllerBase {
     $received_payment_id = \Drupal::request()->get('payment_id');
     $payment = PaymentEntity::load($received_payment_id);
 
-    // Parse response (if any).
-    $this->parseResponse($payment);
-
     $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
     return new TrustedRedirectResponse($this->buildUrl($uri));
   }
@@ -83,9 +80,6 @@ class SermepaController extends ControllerBase {
     // Get payment object (which exists as checked on access policy).
     $received_payment_id = \Drupal::request()->get('payment_id');
     $payment = PaymentEntity::load($received_payment_id);
-
-    // Parse response (if any).
-    $this->parseResponse($payment);
 
     $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ko'];
     return new TrustedRedirectResponse($this->buildUrl($uri));
