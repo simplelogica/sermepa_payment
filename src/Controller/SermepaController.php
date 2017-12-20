@@ -16,6 +16,7 @@ use Drupal\payment\Entity\Payment as PaymentEntity;
 use Drupal\payment\Payment;
 use Drupal\payment\Entity\PaymentStatus;
 use Drupal\sermepa_payment\Plugin\Payment\Method\Sermepa as SermepaMethod;
+use Symfony\Component\HttpFoundation\Response;
 
 class SermepaController extends ControllerBase {
 
@@ -53,12 +54,16 @@ class SermepaController extends ControllerBase {
     $payment = PaymentEntity::load($received_payment_id);
 
     // Parse response (if any).
-    $result = self::parseResponse($payment);
+    self::parseResponse($payment);
 
     \Drupal::service('event_dispatcher')
       ->dispatch(SermepaEvent::AFTER_CALLBACK, new SermepaEvent($payment));
 
-    return $result;
+    return new Response(
+      'OK',
+      Response::HTTP_OK,
+      array('content-type' => 'text/html')
+    );
   }
 
   /**
