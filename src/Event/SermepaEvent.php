@@ -2,6 +2,7 @@
 
 namespace Drupal\sermepa_payment\Event;
 
+use Drupal\payment\Entity\Payment;
 use Symfony\Component\EventDispatcher\Event;
 
 class SermepaEvent extends Event {
@@ -10,11 +11,11 @@ class SermepaEvent extends Event {
 
   private $payment;
 
-  public function __construct(PaymentEntity $payment) {
+  public function __construct(Payment $payment) {
     $this->payment = $payment;
   }
 
-  public function getPayment(): PaymentEntity {
+  public function getPayment(): Payment {
     return $this->payment;
   }
 }
