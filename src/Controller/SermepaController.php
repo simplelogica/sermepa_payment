@@ -87,7 +87,7 @@ class SermepaController extends ControllerBase {
     // Parse response (if any).
     $this->parseResponse($payment);
 
-    $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ok'];
+    $uri = $payment->getPaymentMethod()->getPluginDefinition()['config']['url_ko'];
     return new TrustedRedirectResponse($this->buildUrl($uri));
   }
 
