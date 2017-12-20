@@ -6,6 +6,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\sermepa_payment\Event\SermepaEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 use Drupal\Component\Utility\UrlHelper;
@@ -52,7 +53,12 @@ class SermepaController extends ControllerBase {
     $payment = PaymentEntity::load($received_payment_id);
 
     // Parse response (if any).
-    return self::parseResponse($payment);
+    $result = self::parseResponse($payment);
+
+    \Drupal::service('event_dispatcher')
+      ->dispatch(SermepaEvent::AFTER_CALLBACK, new SermepaEvent($payment));
+
+    return $result;
   }
 
   /**
