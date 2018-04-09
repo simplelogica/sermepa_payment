@@ -1,1 +1,15 @@
 <?php
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Add a field "payment_code" to the payment table
+ * Implements hook_entity_base_field_info().
+ */
+function sermepa_payment_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'payment') {
+    $fields['payment_code'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Payment Code'));
+    return $fields;
+  }
+}
