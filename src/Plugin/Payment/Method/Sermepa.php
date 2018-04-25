@@ -56,7 +56,9 @@ class Sermepa extends PaymentMethodBaseOffsite implements PaymentMethodOffsiteIn
       ->toString();
 
     // Configure gateway
-    $gateway->setOrder($payment->id());
+    //The Order (MERCHANT_ORDER_ID) has to be an alphanumeric string starting with 4 numbers and with a max lengt of 12
+    //https://canales.redsys.es/canales/ayuda/documentacion/Manual%20integracion%20para%20conexion%20por%20Web%20Service.pdf
+    $gateway->setOrder($payment->payment_code->value ?? $payment->id());
     $gateway->setAmount($sermepa_price);
     $gateway->setMerchantUrl($callback_url);
     $gateway->setCurrency($this->pluginDefinition['config']['merchant_currency']);
