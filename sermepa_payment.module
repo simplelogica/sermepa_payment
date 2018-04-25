@@ -60,7 +60,6 @@ function sermepa_payment_callback(Payment $payment) {
   $feedback = $sermepa->getFeedback();
   $response = $feedback['Ds_Response'];
   set_payment_final_status($response, $payment);
-  entity_save('payment', $payment);
 }
 
 
@@ -69,12 +68,11 @@ function sermepa_payment_access_callback(Payment $payment) {
   $amount = $payment->totalAmount(false) * 100;
   $feedback = $sermepa->getFeedback();
 
-  try {
-    $sermepa->checkFeedback($feedback, $amount);
+  if ($sermepa->validSignatures($feedback)) {
     watchdog('sermepa_payment', "Feedback for payment {$payment->pid} was valid. Access authorized.");
     return true;
-  } catch (SermepaException $e) {
-    watchdog('sermepa_payment', "Feedback for payment {$payment->pid} was NOT valid.\nAcces NOT authorized. \nError was: {$e->getMessage()}");
+  } else {
+    watchdog('sermepa_payment', "Feedback for payment {$payment->pid} was NOT valid.\nAcces NOT authorized.");
     return false;
   }
 }
@@ -233,5 +231,5 @@ function set_payment_final_status($response, $payment) {
     }
   }
 
-    entity_save('payment', $payment);
+  entity_save('payment', $payment);
 }
